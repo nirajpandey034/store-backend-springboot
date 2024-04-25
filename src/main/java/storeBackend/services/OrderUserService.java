@@ -1,0 +1,32 @@
+package storeBackend.services;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityNotFoundException;
+import storeBackend.dao.OrderUserRepository;
+import storeBackend.dao.UserRepository;
+import storeBackend.entity.OrderUser;
+import storeBackend.entity.User;
+
+@Service
+public class OrderUserService {
+
+    @Autowired
+    OrderUserRepository orderUserRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    public Integer placeOrder(Map<String, String> order) {
+        User user = userRepository.findById(Integer.parseInt(order.get("userId")))
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        OrderUser orderUser = new OrderUser();
+        orderUser.setUser(user);
+        orderUser = orderUserRepository.save(orderUser);
+        return orderUser.getOrder_user_id();
+    }
+}
