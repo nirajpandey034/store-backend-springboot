@@ -19,18 +19,18 @@ import storeBackend.entity.User;
 import storeBackend.services.UserService;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/getAll")
+	@GetMapping({ "", "/" })
 	public List<User> getAllUsers() {
 		return userService.getAll();
 	}
 
-	@GetMapping("/get/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") int id) {
 		User user = userService.getUser(id);
 

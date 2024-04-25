@@ -20,32 +20,32 @@ import storeBackend.entity.Product;
 import storeBackend.services.ProductService;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
 public class ProductController {
-	
+
 	@Autowired
 	ProductService productService;
 
-	@GetMapping("/getAll")
+	@GetMapping({ "", "/" })
 	public List<Product> getAllProducts() {
 		return productService.getAll();
 	}
-	
-	@GetMapping("/get/{id}")
+
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getProduct(@PathVariable("id") int id) {
 		Product product = productService.getProduct(id);
-		
-		if(product != null) {
+
+		if (product != null) {
 			return ResponseEntity.ok(product);
-		}
-		else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"Product not found\"}");
+		} else
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"Product not found\"}");
 	}
-	
+
 	@PostMapping("/add")
 	public Product addProduct(@RequestBody Product req) {
 		return productService.addProduct(req);
 	}
-	
+
 	@PutMapping("/update")
 	public ResponseEntity<?> updateProduct(@Param("field") String field, @RequestBody Map<String, String> req) {
 		if (field.compareTo("title") == 0) {
@@ -71,7 +71,7 @@ public class ProductController {
 		}
 		return ResponseEntity.internalServerError().build();
 	}
-	
+
 	@DeleteMapping("/delete")
 	public ResponseEntity<?> deleteProduct(@RequestBody Map<String, Integer> req) {
 		return productService.deleteProduct(req);
