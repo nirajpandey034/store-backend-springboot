@@ -54,4 +54,9 @@ public class OrderProductService {
         return arr;
     }
 
+    public List<OrderProduct> getOrderProducts(List<Integer> orderList) {
+
+        return orderProductRepository.findByOrderIdIn(orderList);
+
+    }
 }

@@ -1,6 +1,9 @@
 package storeBackend.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +31,17 @@ public class OrderUserService {
         orderUser.setUser(user);
         orderUser = orderUserRepository.save(orderUser);
         return orderUser.getOrder_user_id();
+    }
+
+    public List<Integer> getOrderList(Integer userId) {
+        List<OrderUser> list = new ArrayList<>();
+
+        list = orderUserRepository.findAllByUserId(userId);
+
+        List<Integer> orderIds = new ArrayList<>();
+        orderIds = list.stream().map(item -> item.getOrder_user_id())
+                .collect(Collectors.toList());
+
+        return orderIds;
     }
 }
